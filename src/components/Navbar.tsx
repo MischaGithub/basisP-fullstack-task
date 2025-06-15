@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getCurrentUser } from "@/lib/current-user";
+import { getCurrentUser } from "@/lib/auth.server";
 import { logoutUser } from "@/actions/auth.actions";
 
 export default async function Navbar() {

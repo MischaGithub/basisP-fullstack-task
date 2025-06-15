@@ -1,12 +1,27 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { loginUser } from "@/actions/auth.actions";
+import { useCacheUser } from "@/hooks/useCacheUser";
+
+type User = {
+  id: string;
+  email: string;
+  role: string;
+};
+
+type LoginResponse = {
+  success: boolean;
+  message: string;
+  user?: User;
+};
 
 export function LoginForm() {
-  const initialState = {
+  const initialState: LoginResponse = {
     success: false,
     message: "",
+    user: undefined,
   };
 
   const [state, formAction] = useActionState(loginUser, initialState);
@@ -14,19 +29,24 @@ export function LoginForm() {
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const router = useRouter();
 
+  // Use your hook to cache user when state.user changes
+  useCacheUser(state?.user);
+
   useEffect(() => {
     if (state) {
-      if (state.success) {
+      if (state.success && state.user) {
         setSuccessMsg(state.message);
         setErrorMsg(null);
+
+        console.log("User cached:", state.user);
+
         router.push("/dashboard");
-        // TODO: you can redirect here after success if you want
       } else {
         setErrorMsg(state.message);
         setSuccessMsg(null);
       }
     }
-  }, [state]);
+  }, [state, router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black px-4">

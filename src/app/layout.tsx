@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Layout from "@/components/Layout";
+import Navbar from "@/components/Navbar";
+import QueryProvider from "@/components/QueryProvider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -24,11 +25,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <QueryProvider>
+          <div className="min-h-screen w-full bg-black text-white flex flex-col">
+            <Navbar />
+            <main className="w-full max-w-5xl mx-auto p-6">{children}</main>
+          </div>
+        </QueryProvider>
       </body>
     </html>
   );

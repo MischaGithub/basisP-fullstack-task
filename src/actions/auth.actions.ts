@@ -10,6 +10,15 @@ type ResponseResult = {
   message: string;
 };
 
+// Define a type for your response including user
+type LoginResponse = ResponseResult & {
+  user?: {
+    id: string;
+    email: string;
+    role: string;
+  } | null;
+};
+
 // REGISTER
 export async function registerUser(
   prevState: ResponseResult,
@@ -51,36 +60,50 @@ export async function registerUser(
 export async function loginUser(
   prevState: ResponseResult,
   formData: FormData
-): Promise<ResponseResult> {
+): Promise<LoginResponse> {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
   if (!email || !password) {
     logEvent("Missing login fields", "auth", { email }, "warning");
-    return { success: false, message: "Email and password are required" };
+    return {
+      success: false,
+      message: "Email and password are required",
+      user: null,
+    };
   }
 
   try {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user || !user.password) {
       logEvent("Login failed - user not found", "auth", { email }, "warning");
-      return { success: false, message: "Invalid credentials" };
+      return { success: false, message: "Invalid credentials", user: null };
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
       logEvent("Login failed - wrong password", "auth", { email }, "warning");
-      return { success: false, message: "Invalid credentials" };
+      return { success: false, message: "Invalid credentials", user: null };
     }
 
     const token = await signAuthToken({ userId: user.id });
     await setAuthCookie(token);
 
     logEvent("User logged in", "auth", { userId: user.id, email }, "info");
-    return { success: true, message: "Login successful" };
+
+    // Return the user info here as well
+    return {
+      success: true,
+      message: "Login successful",
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+      },
+    };
   } catch (error) {
     logEvent("Login error", "auth", {}, "error", error);
-    return { success: false, message: "Login failed" };
+    return { success: false, message: "Login failed", user: null };
   }
 }
 
