@@ -3,15 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function Signup() {
-  const router = useRouter();
+export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
 
     try {
       const res = await fetch("/api/auth/signup", {
@@ -20,31 +19,33 @@ export default function Signup() {
         body: JSON.stringify({ email, password }),
       });
 
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.message || "Signup failed");
-        return;
-      }
+      const data = await res.json();
 
-      // On successful signup, redirect to login page
-      router.push("/login");
-    } catch {
-      setError("An error occurred. Please try again.");
+      if (res.ok) {
+        router.push("/login"); // redirect after successful signup
+      } else {
+        setErrorMsg(data.message || "Signup failed");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      setErrorMsg("Something went wrong");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black px-4">
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSignup}
         className="bg-[#111] p-8 rounded-lg shadow-lg w-full max-w-sm"
       >
         <h1 className="text-4xl font-bold text-[#ff2da0] mb-8 text-center">
-          Signup
+          Sign Up
         </h1>
 
-        {error && (
-          <p className="mb-4 text-center text-red-500 font-semibold">{error}</p>
+        {errorMsg && (
+          <p className="mb-4 text-center text-red-500 font-semibold">
+            {errorMsg}
+          </p>
         )}
 
         <input
@@ -69,7 +70,7 @@ export default function Signup() {
           type="submit"
           className="w-full bg-[#ff2da0] hover:bg-pink-600 text-black font-bold py-3 rounded transition-colors duration-300"
         >
-          Sign Up
+          Create Account
         </button>
       </form>
     </div>

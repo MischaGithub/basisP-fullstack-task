@@ -3,15 +3,15 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function Login() {
+export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setErrorMsg("");
 
     try {
       const res = await fetch("/api/auth/login", {
@@ -20,33 +20,35 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       });
 
-      if (!res.ok) {
-        setError("Invalid email or password");
-        return;
-      }
-
       const data = await res.json();
-      const { token } = data;
 
-      localStorage.setItem("token", token);
-      router.push("/dashboard");
-    } catch {
-      setError("An error occurred. Please try again.");
+      if (res.ok) {
+        // Store token in localStorage
+        localStorage.setItem("token", data.token);
+        router.push("/dashboard");
+      } else {
+        setErrorMsg(data.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setErrorMsg("Something went wrong");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black px-4">
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleLogin}
         className="bg-[#111] p-8 rounded-lg shadow-lg w-full max-w-sm"
       >
         <h1 className="text-4xl font-bold text-[#ff2da0] mb-8 text-center">
           Login
         </h1>
 
-        {error && (
-          <p className="mb-4 text-center text-red-500 font-semibold">{error}</p>
+        {errorMsg && (
+          <p className="mb-4 text-center text-red-500 font-semibold">
+            {errorMsg}
+          </p>
         )}
 
         <input
@@ -71,7 +73,7 @@ export default function Login() {
           type="submit"
           className="w-full bg-[#ff2da0] hover:bg-pink-600 text-black font-bold py-3 rounded transition-colors duration-300"
         >
-          Log In
+          Login
         </button>
       </form>
     </div>
