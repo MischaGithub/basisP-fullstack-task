@@ -15,29 +15,24 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique
-  password      String
-  name          String?
-  role          Role      @default(AGENT)
-  pings         Ping[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  role      String   @default("user") // "user" or "admin"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  pings     Ping[]
 }
 
 model Ping {
-  id            String    @id @default(uuid())
-  latitude      Float
-  longitude     Float
-  userId        String
-  user          User      @relation(fields: [userId], references: [id])
-  parentId      String?
-  parent        Ping?     @relation("PingTrail", fields: [parentId], references: [id])
-  responses     Ping[]    @relation("PingTrail")
-  createdAt     DateTime  @default(now())
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  parent    Ping?    @relation("PingTrail", fields: [parentId], references: [id])
+  parentId  String?
+  children  Ping[]   @relation("PingTrail")
+  latitude  Float
+  longitude Float
+  createdAt DateTime @default(now())
 }
 
-enum Role {
-  AGENT
-  ADMIN
-}
