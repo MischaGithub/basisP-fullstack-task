@@ -1,10 +1,11 @@
-// app/login/page.tsx
 import SignUpForm from "./SignUpForm";
 
-export default function SignUpPage() {
+const SignUpPage = () => {
   return (
     <div>
       <SignUpForm />
     </div>
   );
-}
+};
+
+export default SignUpPage;

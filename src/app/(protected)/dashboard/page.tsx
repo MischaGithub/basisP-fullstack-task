@@ -3,7 +3,7 @@ import { getCurrentUser } from "@/lib/current-user";
 import DashboardClient from "./DashboardClient";
 import { prisma } from "@/db/prisma";
 
-export default async function DashboardPage() {
+const DashboardPage = async () => {
   const user = await getCurrentUser();
 
   const latestPings = await prisma.ping.findMany({
@@ -14,4 +14,6 @@ export default async function DashboardPage() {
   });
 
   return <DashboardClient user={user} latestPings={latestPings} />;
-}
+};
+
+export default DashboardPage;

@@ -4,12 +4,13 @@ import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { loginUser } from "@/actions/auth.actions";
 import Spinner from "@/components/Spinner";
+import { FiMail, FiLock, FiLogIn } from "react-icons/fi";
 
-export function LoginForm() {
+const LoginForm = () => {
   const initialState = {
     success: false,
     message: "",
-    user: null, // must match the actual type
+    user: null,
   };
 
   const [state, formAction] = useActionState(loginUser, initialState);
@@ -25,7 +26,6 @@ export function LoginForm() {
         setErrorMsg(null);
         setLoading(true);
 
-        // Show spinner for 1 second before redirecting
         setTimeout(() => {
           router.push("/dashboard");
         }, 1000);
@@ -46,12 +46,12 @@ export function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black px-4">
+    <div className="h-screen flex items-center justify-center bg-black px-4">
       <form
         action={formAction}
-        className="bg-[#111] p-8 rounded-lg shadow-lg w-full max-w-sm"
+        className="bg-[#111] p-10 rounded-2xl shadow-xl w-full max-w-md"
       >
-        <h1 className="text-4xl font-bold text-[#ff2da0] mb-8 text-center">
+        <h1 className="text-5xl font-extrabold text-[#ff2da0] mb-10 text-center drop-shadow-md">
           Login
         </h1>
 
@@ -66,29 +66,44 @@ export function LoginForm() {
           </p>
         )}
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          required
-          className="w-full mb-6 p-3 rounded border border-gray-700 bg-black text-[#00ffff] placeholder-[#00ffff] focus:outline-none focus:ring-2 focus:ring-[#ff2da0]"
-        />
+        <div className="relative mb-6">
+          <FiMail
+            className="absolute top-1/2 left-3 transform -translate-y-1/2 text-[#00ffff]"
+            size={20}
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            required
+            className="w-full pl-10 p-3 rounded-lg border border-gray-700 bg-black text-[#00ffff] placeholder-[#00ffff] focus:outline-none focus:ring-2 focus:ring-[#ff2da0]"
+          />
+        </div>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-          className="w-full mb-8 p-3 rounded border border-gray-700 bg-black text-[#00ffff] placeholder-[#00ffff] focus:outline-none focus:ring-2 focus:ring-[#ff2da0]"
-        />
+        <div className="relative mb-8">
+          <FiLock
+            className="absolute top-1/2 left-3 transform -translate-y-1/2 text-[#00ffff]"
+            size={20}
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+            className="w-full pl-10 p-3 rounded-lg border border-gray-700 bg-black text-[#00ffff] placeholder-[#00ffff] focus:outline-none focus:ring-2 focus:ring-[#ff2da0]"
+          />
+        </div>
 
         <button
           type="submit"
-          className="w-full bg-[#ff2da0] hover:bg-pink-600 text-black font-bold py-3 rounded transition-colors duration-300"
+          className="w-full flex items-center justify-center gap-3 bg-[#ff2da0] hover:bg-pink-600 text-black font-extrabold py-4 rounded-lg transition-all duration-300 text-lg shadow-md"
         >
+          <FiLogIn size={22} />
           Login
         </button>
       </form>
     </div>
   );
-}
+};
+
+export default LoginForm;

@@ -1,6 +1,7 @@
-// app/pings/page.tsx
 import AllPingsClient from "./AllPingsClient";
 
-export default function AllPingsPage() {
+const AllPingsPage = () => {
   return <AllPingsClient />;
-}
+};
+
+export default AllPingsPage;

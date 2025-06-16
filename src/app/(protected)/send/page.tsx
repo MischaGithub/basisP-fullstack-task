@@ -1,8 +1,7 @@
-// src/app/send/page.tsx
 import { getCurrentUser } from "@/lib/current-user";
-import { SendPingClient } from "./SendPingClient";
+import SendPingClient from "./SendPingClient";
 
-export default async function SendPage() {
+const SendPage = async () => {
   const user = await getCurrentUser();
 
   if (!user) {
@@ -14,4 +13,6 @@ export default async function SendPage() {
   }
 
   return <SendPingClient userId={user.id} />;
-}
+};
+
+export default SendPage;

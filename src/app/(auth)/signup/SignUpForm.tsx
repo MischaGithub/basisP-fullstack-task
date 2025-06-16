@@ -4,38 +4,29 @@ import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { registerUser } from "@/actions/auth.actions";
 import Spinner from "@/components/Spinner";
+import { FiUser, FiMail, FiLock } from "react-icons/fi";
 
-type RegisterResponse = {
-  success: boolean;
-  message: string;
-};
-
-export default function SignUpForm() {
-  const initialState: RegisterResponse = {
+const SignUpForm = () => {
+  const intialState = {
     success: false,
     message: "",
   };
 
-  const [state, formAction] = useActionState(registerUser, initialState);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [successMsg, setSuccessMsg] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [state, formAction] = useActionState(registerUser, intialState);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (state) {
       if (state.success) {
-        setSuccessMsg(state.message);
         setErrorMsg(null);
         setLoading(true);
-
-        // Redirect to login after short delay
         setTimeout(() => {
           router.push("/dashboard");
         }, 1200);
       } else if (!state.success && state.message) {
         setErrorMsg(state.message);
-        setSuccessMsg(null);
         setLoading(false);
       }
     }
@@ -53,9 +44,9 @@ export default function SignUpForm() {
     <div className="min-h-screen flex items-center justify-center bg-black px-4">
       <form
         action={formAction}
-        className="bg-[#111] p-8 rounded-lg shadow-lg w-full max-w-sm"
+        className="bg-[#111] p-8 rounded-2xl shadow-2xl w-full max-w-md"
       >
-        <h1 className="text-4xl font-bold text-[#ff2da0] mb-8 text-center">
+        <h1 className="text-5xl font-extrabold text-[#ff2da0] mb-8 text-center drop-shadow-md">
           Sign Up
         </h1>
 
@@ -64,56 +55,70 @@ export default function SignUpForm() {
             {errorMsg}
           </p>
         )}
-        {successMsg && (
-          <p className="mb-4 text-center text-green-400 font-semibold">
-            {successMsg}
-          </p>
-        )}
 
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          required
-          className="w-full mb-6 p-3 rounded border border-gray-700 bg-black text-[#00ffff] placeholder-[#00ffff] focus:outline-none focus:ring-2 focus:ring-[#ff2da0]"
-        />
+        {/* Full Name */}
+        <div className="flex items-center mb-6 bg-black border border-gray-700 rounded px-3 py-2">
+          <FiUser className="text-[#00ffff] mr-3" size={20} />
+          <input
+            type="text"
+            name="name"
+            placeholder="Full Name"
+            required
+            className="w-full bg-transparent text-[#00ffff] placeholder-[#00ffff] focus:outline-none"
+          />
+        </div>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          required
-          autoComplete="email"
-          className="w-full mb-6 p-3 rounded border border-gray-700 bg-black text-[#00ffff] placeholder-[#00ffff] focus:outline-none focus:ring-2 focus:ring-[#ff2da0]"
-        />
+        {/* Email */}
+        <div className="flex items-center mb-6 bg-black border border-gray-700 rounded px-3 py-2">
+          <FiMail className="text-[#00ffff] mr-3" size={20} />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            required
+            autoComplete="email"
+            className="w-full bg-transparent text-[#00ffff] placeholder-[#00ffff] focus:outline-none"
+          />
+        </div>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-          minLength={6}
-          autoComplete="new-password"
-          className="w-full mb-6 p-3 rounded border border-gray-700 bg-black text-[#00ffff] placeholder-[#00ffff] focus:outline-none focus:ring-2 focus:ring-[#ff2da0]"
-        />
+        {/* Password */}
+        <div className="flex items-center mb-6 bg-black border border-gray-700 rounded px-3 py-2">
+          <FiLock className="text-[#00ffff] mr-3" size={20} />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+            minLength={6}
+            autoComplete="new-password"
+            className="w-full bg-transparent text-[#00ffff] placeholder-[#00ffff] focus:outline-none"
+          />
+        </div>
 
-        <input
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirm Password"
-          required
-          minLength={6}
-          autoComplete="new-password"
-          className="w-full mb-8 p-3 rounded border border-gray-700 bg-black text-[#00ffff] placeholder-[#00ffff] focus:outline-none focus:ring-2 focus:ring-[#ff2da0]"
-        />
+        {/* Confirm Password */}
+        <div className="flex items-center mb-8 bg-black border border-gray-700 rounded px-3 py-2">
+          <FiLock className="text-[#00ffff] mr-3" size={20} />
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            required
+            minLength={6}
+            autoComplete="new-password"
+            className="w-full bg-transparent text-[#00ffff] placeholder-[#00ffff] focus:outline-none"
+          />
+        </div>
 
+        {/* Submit */}
         <button
           type="submit"
-          className="w-full bg-[#ff2da0] hover:bg-pink-600 text-black font-bold py-3 rounded transition-colors duration-300"
+          className="w-full bg-[#ff2da0] hover:bg-pink-600 text-black font-extrabold py-3 rounded-lg transition-colors duration-300 shadow-md"
         >
           Sign Up
         </button>
       </form>
     </div>
   );
-}
+};
+
+export default SignUpForm;

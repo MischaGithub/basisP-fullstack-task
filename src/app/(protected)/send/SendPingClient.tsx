@@ -9,7 +9,7 @@ type Props = {
   userId: string;
 };
 
-export function SendPingClient({ userId }: Props) {
+const SendPingClient = ({ userId }: Props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
@@ -63,4 +63,6 @@ export function SendPingClient({ userId }: Props) {
       {error && <p className="mt-4 text-red-500">{error}</p>}
     </div>
   );
-}
+};
+
+export default SendPingClient;

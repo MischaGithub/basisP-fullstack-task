@@ -1,10 +1,11 @@
-// app/login/page.tsx
-import { LoginForm } from "./LoginForm";
+import LoginForm from "./LoginForm";
 
-export default function LoginPage() {
+const LoginPage = () => {
   return (
     <div>
       <LoginForm />
     </div>
   );
-}
+};
+
+export default LoginPage;
