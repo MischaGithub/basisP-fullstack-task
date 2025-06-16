@@ -11,11 +11,15 @@ type ResponseResult = {
 };
 
 // Define a type for your response including user
-type LoginResponse = ResponseResult & {
+type LoginResponse = {
+  success: boolean;
+  message: string;
   user?: {
     id: string;
+    name: string;
     email: string;
     role: string;
+    createdAt: Date;
   } | null;
 };
 
@@ -24,12 +28,27 @@ export async function registerUser(
   prevState: ResponseResult,
   formData: FormData
 ): Promise<ResponseResult> {
+  const name = formData.get("name") as string;
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
+  const confirmPassword = formData.get("confirmPassword") as string;
 
-  if (!email || !password) {
+  if (!name || !email || !password || !confirmPassword) {
     logEvent("Missing registration fields", "auth", { email }, "warning");
-    return { success: false, message: "Email and password are required" };
+    return { success: false, message: "All fields are required" };
+  }
+
+  if (password !== confirmPassword) {
+    logEvent("Password mismatch", "auth", { email }, "warning");
+    return { success: false, message: "Passwords do not match" };
+  }
+
+  if (password.length < 6) {
+    logEvent("Password too short", "auth", { email }, "warning");
+    return {
+      success: false,
+      message: "Password must be at least 6 characters",
+    };
   }
 
   try {
@@ -42,7 +61,7 @@ export async function registerUser(
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({
-      data: { email, password: hashedPassword },
+      data: { name, email, password: hashedPassword },
     });
 
     const token = await signAuthToken({ userId: user.id });
@@ -97,8 +116,10 @@ export async function loginUser(
       message: "Login successful",
       user: {
         id: user.id,
+        name: user.name,
         email: user.email,
         role: user.role,
+        createdAt: user.createdAt,
       },
     };
   } catch (error) {

@@ -1,51 +1,50 @@
-// app/dashboard/DashboardClient.tsx
 "use client";
 
-import { useCacheUser } from "@/hooks/useCacheUser";
-
 export default function DashboardClient({ user, latestPings }: any) {
-  useCacheUser(user); // Cache user into React Query for the rest of the app
-
   return (
-    <div className="min-h-screen bg-black text-white p-6">
-      <h1 className="text-3xl font-bold text-[#ff2da0] text-center mb-6">
-        Dashboard
-      </h1>
+    <div className="min-h-screen bg-black text-white p-6 flex flex-col items-center">
+      <h1 className="text-4xl font-extrabold text-[#ff2da0] mb-8">Dashboard</h1>
 
-      <div className="text-center mb-6">
-        <p className="text-[#00ffff] text-sm">Welcome, {user.email}</p>
-        <p className="text-gray-400 text-xs">
+      <div className="text-center mb-10">
+        <p className="text-[#00ffff] text-lg font-medium">
+          Welcome, {user.name}
+        </p>
+        <p className="text-gray-400 text-sm mt-1">
           Joined: {new Date(user.createdAt).toLocaleDateString("en-GB")}
         </p>
       </div>
 
       {latestPings.length === 0 ? (
-        <p className="text-[#00ffff]">No pings found.</p>
+        <p className="text-[#00ffff] text-xl">No pings found.</p>
       ) : (
-        <ul className="space-y-4 max-w-3xl mx-auto">
+        <ul className="w-full max-w-4xl space-y-5">
           {latestPings.map((ping: any) => (
             <li
               key={ping.id}
-              className="bg-[#111] p-4 rounded shadow-md border border-[#ff2da0]"
+              className="bg-[#111] p-5 rounded-lg shadow-lg border border-[#ff2da0]"
             >
-              <p>
-                <strong>Coordinates:</strong> {ping.latitude.toFixed(4)},{" "}
+              <p className="text-[#00ffff] font-semibold mb-1">
+                Coordinates: {ping.latitude.toFixed(4)},{" "}
                 {ping.longitude.toFixed(4)}
               </p>
-              <p>
-                <strong>Timestamp:</strong>{" "}
-                {new Date(ping.createdAt).toLocaleString("en-GB")}
+              <p className="text-gray-300 mb-2">
+                Timestamp: {new Date(ping.createdAt).toLocaleString("en-GB")}
               </p>
               {ping.parent ? (
-                <p>
-                  <strong>In response to Ping ID:</strong> {ping.parent.id}
-                  <br />
-                  <strong>Parent Coordinates:</strong>{" "}
-                  {ping.parent.latitude.toFixed(4)},{" "}
-                  {ping.parent.longitude.toFixed(4)}
-                </p>
+                <div className="text-gray-400 text-sm">
+                  <p>
+                    <strong>In response to Ping ID:</strong> {ping.parent.id}
+                  </p>
+                  <p>
+                    <strong>Parent Coordinates:</strong>{" "}
+                    {ping.parent.latitude.toFixed(4)},{" "}
+                    {ping.parent.longitude.toFixed(4)}
+                  </p>
+                </div>
               ) : (
-                <p>This ping has no parent (initial ping).</p>
+                <p className="text-gray-500 italic text-sm">
+                  This ping has no parent (initial ping).
+                </p>
               )}
             </li>
           ))}

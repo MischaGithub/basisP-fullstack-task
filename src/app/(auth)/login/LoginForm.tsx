@@ -3,34 +3,13 @@
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { loginUser } from "@/actions/auth.actions";
-import { useCacheUser } from "@/hooks/useCacheUser";
-
-type User = {
-  id: string;
-  email: string;
-  role: string;
-};
-
-type LoginResponse = {
-  success: boolean;
-  message: string;
-  user?: User;
-};
-
-function Spinner() {
-  return (
-    <div className="flex items-center justify-center space-x-2">
-      <div className="w-6 h-6 rounded-full animate-ping bg-pink-500"></div>
-      <div className="w-6 h-6 rounded-full animate-ping animation-delay-200 bg-blue-500"></div>
-    </div>
-  );
-}
+import Spinner from "@/components/Spinner";
 
 export function LoginForm() {
-  const initialState: LoginResponse = {
+  const initialState = {
     success: false,
     message: "",
-    user: undefined,
+    user: null, // must match the actual type
   };
 
   const [state, formAction] = useActionState(loginUser, initialState);
@@ -38,9 +17,6 @@ export function LoginForm() {
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
-  // Cache user when state.user changes
-  useCacheUser(state?.user);
 
   useEffect(() => {
     if (state) {
