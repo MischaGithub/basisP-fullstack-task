@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth.server";
 import { logoutUser } from "@/actions/auth.actions";
+import LogoutButton from "./LogoutButton";
 
 export default async function Navbar() {
   const user = await getCurrentUser();
@@ -25,12 +26,7 @@ export default async function Navbar() {
           <Link href="/pings" className="text-[#00ffff] hover:underline">
             All Pings
           </Link>
-          <button
-            onClick={logoutUser}
-            className="text-[#ff2da0] hover:underline"
-          >
-            Logout
-          </button>
+          <LogoutButton />
         </div>
       )}
     </nav>

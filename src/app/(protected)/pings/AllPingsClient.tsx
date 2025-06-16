@@ -1,10 +1,11 @@
-// app/pings/AllPingsClient.tsx
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
 import { getAllPings } from "@/actions/ping.actions";
+import Spinner from "@/components/Spinner";
 
-export default function AllPingsClient() {
+const AllPingsClient = () => {
+  // Fetch all pings using React Query
   const {
     data: pings = [],
     isLoading,
@@ -14,17 +15,20 @@ export default function AllPingsClient() {
     queryFn: getAllPings,
   });
 
+  // Show spinner while data is loading
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-black text-white p-6">
-        <p className="text-center text-gray-400">Loading pings...</p>
+      <div className="min-h-screen flex items-center justify-center bg-black px-4">
+        <Spinner />
       </div>
     );
   }
 
+  // Show error state if fetch fails
   if (isError) {
     return (
       <div className="min-h-screen bg-black text-white p-6">
+        <Spinner />
         <p className="text-center text-red-400">Failed to load pings.</p>
       </div>
     );
@@ -47,7 +51,7 @@ export default function AllPingsClient() {
             >
               <div className="flex justify-between">
                 <span className="text-sm text-[#00ffff] font-semibold">
-                  {ping.user.role}
+                  {ping.user?.name || ping.user?.email} ({ping.user?.role})
                 </span>
                 <span className="text-sm text-gray-400">
                   {new Date(ping.createdAt).toLocaleString()}
@@ -68,4 +72,6 @@ export default function AllPingsClient() {
       )}
     </div>
   );
-}
+};
+
+export default AllPingsClient;
