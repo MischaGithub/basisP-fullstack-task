@@ -15,7 +15,7 @@ export default function DashboardClient({ user, latestPings }: any) {
       <div className="text-center mb-6">
         <p className="text-[#00ffff] text-sm">Welcome, {user.email}</p>
         <p className="text-gray-400 text-xs">
-          Joined: {new Date(user.createdAt).toLocaleDateString()}
+          Joined: {new Date(user.createdAt).toLocaleDateString("en-GB")}
         </p>
       </div>
 
@@ -34,7 +34,7 @@ export default function DashboardClient({ user, latestPings }: any) {
               </p>
               <p>
                 <strong>Timestamp:</strong>{" "}
-                {new Date(ping.createdAt).toLocaleString()}
+                {new Date(ping.createdAt).toLocaleString("en-GB")}
               </p>
               {ping.parent ? (
                 <p>

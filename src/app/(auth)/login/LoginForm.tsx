@@ -17,6 +17,15 @@ type LoginResponse = {
   user?: User;
 };
 
+function Spinner() {
+  return (
+    <div className="flex items-center justify-center space-x-2">
+      <div className="w-6 h-6 rounded-full animate-ping bg-pink-500"></div>
+      <div className="w-6 h-6 rounded-full animate-ping animation-delay-200 bg-blue-500"></div>
+    </div>
+  );
+}
+
 export function LoginForm() {
   const initialState: LoginResponse = {
     success: false,
@@ -27,9 +36,10 @@ export function LoginForm() {
   const [state, formAction] = useActionState(loginUser, initialState);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // Use your hook to cache user when state.user changes
+  // Cache user when state.user changes
   useCacheUser(state?.user);
 
   useEffect(() => {
@@ -37,16 +47,27 @@ export function LoginForm() {
       if (state.success && state.user) {
         setSuccessMsg(state.message);
         setErrorMsg(null);
+        setLoading(true);
 
-        console.log("User cached:", state.user);
-
-        router.push("/dashboard");
+        // Show spinner for 1 second before redirecting
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 1000);
       } else {
         setErrorMsg(state.message);
         setSuccessMsg(null);
+        setLoading(false);
       }
     }
   }, [state, router]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black px-4">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black px-4">
