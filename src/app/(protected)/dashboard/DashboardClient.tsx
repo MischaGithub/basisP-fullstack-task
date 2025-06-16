@@ -2,7 +2,7 @@
 
 const DashboardClient = ({ user, latestPings }: any) => {
   return (
-    <div className="min-h-screen bg-black text-white p-6 flex flex-col items-center">
+    <div className="bg-black text-white p-6 flex flex-col items-center">
       <h1 className="text-4xl font-extrabold text-[#ff2da0] mb-8">Dashboard</h1>
 
       <div className="text-center mb-10">

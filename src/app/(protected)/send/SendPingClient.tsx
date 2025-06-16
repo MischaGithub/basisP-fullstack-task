@@ -48,7 +48,7 @@ const SendPingClient = ({ userId }: Props) => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center text-center p-6">
+    <div className="bg-black text-white flex flex-col items-center justify-center text-center p-6">
       <h1 className="text-3xl font-bold text-[#ff2da0] mb-4">Send a Ping</h1>
       <p className="text-[#00ffff] mb-6">Ping your coordinates securely</p>
 
