@@ -1,6 +1,6 @@
 // app/(protected)/layout.tsx
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth.server";
+import { getCurrentUser } from "@/lib/current-user";
 
 export default async function ProtectedLayout({
   children,

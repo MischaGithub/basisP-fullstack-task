@@ -1,5 +1,5 @@
 // app/dashboard/page.tsx
-import { getCurrentUser } from "@/lib/auth.server";
+import { getCurrentUser } from "@/lib/current-user";
 import DashboardClient from "./DashboardClient";
 import { prisma } from "@/db/prisma";
 

@@ -1,5 +1,5 @@
 // src/app/send/page.tsx
-import { getCurrentUser } from "@/lib/auth.server";
+import { getCurrentUser } from "@/lib/current-user";
 import { SendPingClient } from "./SendPingClient";
 
 export default async function SendPage() {

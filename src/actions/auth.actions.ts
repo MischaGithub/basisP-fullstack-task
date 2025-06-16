@@ -3,7 +3,11 @@
 import { prisma } from "@/db/prisma";
 import bcrypt from "bcryptjs";
 import { logEvent } from "@/lib/sentry";
-import { signAuthToken, setAuthCookie, removeAuthCookie } from "@/lib/auth";
+import {
+  signAuthToken,
+  setAuthCookie,
+  removeAuthCookie,
+} from "@/lib/auth-server";
 
 type ResponseResult = {
   success: boolean;

@@ -2,7 +2,7 @@
 "use server";
 
 import { prisma } from "@/db/prisma";
-import { getCurrentUser } from "@/lib/auth.server";
+import { getCurrentUser } from "@/lib/current-user";
 import { revalidatePath } from "next/cache";
 
 /**
