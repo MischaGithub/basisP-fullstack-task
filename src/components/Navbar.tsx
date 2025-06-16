@@ -4,10 +4,11 @@ import LogoutButton from "./LogoutButton";
 import { FiZap } from "react-icons/fi";
 
 export default async function Navbar() {
+  // Get current user
   const user = await getCurrentUser();
 
   return (
-    <nav className="flex justify-between items-center px-6 py-4 border-b border-gray-700 bg-[#111] sticky top-0 z-50">
+    <nav className="flex justify-between items-center px-6 py-4 border-b border-gray-700 bg-[#111] absolute top-0 z-50 min-w-screen">
       <Link
         href="/"
         className="flex items-center space-x-2 text-4xl font-extrabold text-[#ff2da0] hover:underline"

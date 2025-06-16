@@ -5,9 +5,7 @@ import { prisma } from "@/db/prisma";
 import { getCurrentUser } from "@/lib/current-user";
 import { revalidatePath } from "next/cache";
 
-/**
- * Fetch all pings
- */
+// Fetch all pings
 export async function getAllPings() {
   return prisma.ping.findMany({
     include: {
@@ -20,9 +18,7 @@ export async function getAllPings() {
   });
 }
 
-/**
- * Send a new ping with location data
- */
+// Send a new ping with location data
 export async function sendPing({
   latitude,
   longitude,
