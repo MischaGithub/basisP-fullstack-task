@@ -13,7 +13,7 @@ export default async function Navbar() {
         href="/"
         className="flex items-center space-x-2 text-4xl font-extrabold text-[#ff2da0] hover:underline"
       >
-        <span>Chain</span>
+        <span>Bond Ping</span>
         <FiZap size={36} />
       </Link>
 

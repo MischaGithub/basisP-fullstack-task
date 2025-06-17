@@ -2,7 +2,7 @@ import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { logEvent } from "./sentry";
 
-const secret = new TextEncoder().encode(process.env.NEXT_PUBLIC_AUTH_SECRET);
+const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
 const cookieName = "auth_token";
 
 // Encrypt the auth token
