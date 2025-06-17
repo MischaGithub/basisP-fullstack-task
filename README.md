@@ -59,11 +59,11 @@ Open `.env` and add these:
 ```
 DATABASE_URL=your_neon_db_url_here
 SENTRY_DSN=your_sentry_dsn_here
-JWT_SECRET=your_jwt_secret_here
+AUTH_SECRET=your_jwt_secret_here
 ```
 
 - For **SENTRY_DSN**, get it from your Sentry project settings at [sentry.io](https://sentry.io)
-- For **JWT_SECRET**, use a strong random string (you can generate one with a password manager or command line)
+- For **AUTH_SECRET**, use a strong random string (you can generate one with a password manager or command line)
 
 5. **Generate Prisma client & run migrations**
 
